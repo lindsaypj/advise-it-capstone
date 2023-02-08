@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
 
-    <!--Including the CSS for the file-->
-    <include href="views/includes/css.html"></include>
+    <!-- Styles -->
+	<link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+        crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="styles/styles.css">
 
     <title>Admin Table</title>
 </head>
@@ -32,16 +38,16 @@
                 </thead>
                 <tbody>
                     <!--Repeating section to show all data in table from database-->
-                    <repeat group="{{ @schedules }}" value="@schedule">
+                    <repeat group="{{ @plans }}" value="{{ @plan }}">
                         <tr>
-                            <td>{{ @schedule['token'] }}</td>
+                            <td>{{ @plan.token }}</td>
                             <td>
-                                <a href="educationPlan?{{ @schedule['token'] }}" target="_blank">
-                                    Sprint_1/educationPlan?{{ @schedule['token'] }}
+                                <a href="view-plan/{{ @plan.token }}" target="_blank">
+                                    advise-it/view-plan/{{ @plan.token }}
                                 </a>
                             </td>
-                            <td>{{ @schedule['advisor'] }}</td>
-                            <td>{{ Formatter::formatTime(@schedule['lastUpdated']) }}</td>
+                            <td>{{ @plan.advisor }}</td>
+                            <td>{{ Formatter::formatTime(@plan.lastUpdated) }}</td>
                         </tr>
                     </repeat>
                 </tbody>
@@ -49,7 +55,16 @@
         </section>
     </div>
 
-    <!--Including the JS for the file-->
-    <include href="views/includes/js.html"></include>
+    <!-- JavaScript -->
+	<script 
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous">
+    </script>
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous">
+    </script>
 </body>
 </html>

@@ -114,12 +114,17 @@ class Controller
             $_SESSION['displayLogin'] = true;
             header('location: ./');
         }
+
+        // Generate New Token for "Education Plan" Link
+        $newToken = $GLOBALS['datalayer']->generateToken();
+        $this->_f3->set('newToken', $newToken);
+
         // Get plan data
         $plans = $GLOBALS['datalayer']->getPlans();
         $this->_f3->set('plans', $plans);
 
         $view = new Template();
-        echo $view->render('views/admin.php');
+        echo $view->render('views/admin.html');
     }
 
     /**
