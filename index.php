@@ -1,7 +1,5 @@
 <?php
-// Patrick Lindsay
-// index.php
-// 1/20/2023
+// 2/7/2023
 // Entry Point of the Advise-IT website
 // Initializes the Fat-Free Framework and defines the routing
 // interfaces with the controller

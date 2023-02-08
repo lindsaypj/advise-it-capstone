@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class to retrieve data for the findMatch() (dating) website.
+ * Class to facilitate database interactions for the Advist-IT website.
  * Stores form options and methods to interact with database.
  * @author Patrick Lindsay
- * @version 1.1
- * @date 6/4/22
+ * @version 2.0
+ * @date 2/7/23
  */
 class DataLayer
 {

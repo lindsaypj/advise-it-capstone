@@ -6,7 +6,7 @@
 // @saveSuccess: Boolean indicating whether the data was successfully stored in the database
 
 // Display data (if found)
-// @years, @advisor
+// @schoolYears, @advisor
 ?>
 
 <html lang="en">
