@@ -1,0 +1,15 @@
+{
+  "name": "plindsay/485/advise-it",
+  "authors": [
+    {
+      "name": "Patrick Lindsay",
+      "email": "lindsay.patrick@student.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  },
+  "autoload": {
+    "classmap": ["model/", "controller/"]
+  }
+}

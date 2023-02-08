@@ -1,0 +1,55 @@
+@font-face {
+    font-family: greenRiverFont;
+    src: url(big_noodle_titling.ttf);
+}
+
+.navbar {
+    padding: 0 !important;
+}
+
+.nav-grc {
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+.nav-item {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+}
+
+.nav-link {
+    margin: 0 !important;
+}
+
+.bg-grcgreen {
+    background-color: #2c882b !important;
+}
+
+.gr-logo {
+    width: 120px;
+    margin: 0 32px !important;
+}
+
+.grfont {
+    font-family: greenRiverFont, serif;
+}
+
+.saved {
+    margin-right: 50px !important;
+}
+
+/* CSS for printing */
+@media print {
+    .navbar {
+        display: none !important;
+    }
+
+    .table {
+        box-shadow: none !important;
+        border-color: black !important;
+    }
+
+    .table th {
+        background-color: grey !important;
+        color: black !important;
+    }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--Including the CSS for the file-->
+    <include href="views/includes/css.html"></include>
+
+    <title>Admin Table</title>
+</head>
+
+<body class="">
+    <!--NAVBAR-->
+    <include href="views/includes/navbar.html"></include>
+    <div class="container mt-2 grfont">
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <h1 class="pt-5">Academic Schedules</h1>
+                <hr class="shadow-sm">
+            </div>
+        </div>
+        <!-- Admin Table -->
+        <section class="ml-5 mr-5 p-5">
+            <table class="table table-responsive table-bordered table-hover text-center shadow-sm">
+                <thead class="bg-grcgreen">
+                    <tr>
+                        <th scope="col">Token</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Advisor</th>
+                        <th scope="col">Last Saved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Repeating section to show all data in table from database-->
+                    <repeat group="{{ @schedules }}" value="@schedule">
+                        <tr>
+                            <td>{{ @schedule['token'] }}</td>
+                            <td>
+                                <a href="educationPlan?{{ @schedule['token'] }}" target="_blank">
+                                    Sprint_1/educationPlan?{{ @schedule['token'] }}
+                                </a>
+                            </td>
+                            <td>{{ @schedule['advisor'] }}</td>
+                            <td>{{ Formatter::formatTime(@schedule['lastUpdated']) }}</td>
+                        </tr>
+                    </repeat>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!--Including the JS for the file-->
+    <include href="views/includes/js.html"></include>
+</body>
+</html>
