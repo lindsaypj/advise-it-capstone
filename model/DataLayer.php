@@ -319,11 +319,14 @@ class DataLayer
             }
         }
 
+        // Check if any years were found
+        if ($first == 3000 || $last == 0) {
+            return self::createBlankPlan();
+        }
         // Mark middle years for render
         for ($i = $first; $i < $last; $i++) {
             $plan['schoolYears'][$i]['render'] = true;
         }
-
         return $plan;
     }
 }

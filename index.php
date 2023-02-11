@@ -42,6 +42,10 @@ $f3->route('GET /admin', function() {
     $GLOBALS['con']->admin();
 });
 
+$f3->route('GET /logout', function() {
+    $GLOBALS['con']->logout();
+});
+
 // Define View Plan page (handles new plan also)
 $f3->route('GET|POST /view-plan/@token', function($f3) {
     $GLOBALS['con']->viewPlan($f3->get('PARAMS.token'));

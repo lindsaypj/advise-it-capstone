@@ -104,6 +104,14 @@ class Controller
     }
 
     /**
+     * Clears the session and logs out the user.
+     */
+    function logout() {
+        session_destroy();
+        header("Location: ./");
+    }
+
+    /**
      * Renders the admin page if the user is logged in
      * Redirects user to home if not logged in
      */
