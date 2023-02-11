@@ -34,7 +34,7 @@ class Controller
         $this->_f3->set('newToken', $newToken);
 
         // Open login form if redirected
-        if ($_SESSION['displayLogin']) {
+        if (isset($_SESSION['displayLogin']) && $_SESSION['displayLogin'] === true) {
             $this->_f3->set('displayForm', true);
             // IMPORTANT! CLEAR VALUE
             $_SESSION['displayLogin'] = false;
