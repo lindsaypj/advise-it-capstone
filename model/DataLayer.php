@@ -10,7 +10,7 @@
 class DataLayer
 {
     // FIELDS
-    private PDO $_dbh;
+    private $_dbh;
 
     /**
      * Constructor for DataLayer Objects. Instantiates the PDO object for
