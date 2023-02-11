@@ -99,7 +99,7 @@ class Controller
             $this->_f3->set('displayForm', true);
 
             $view = new Template();
-            echo $view->render('views/home.php');
+            echo $view->render('views/home.html');
         }
     }
 
