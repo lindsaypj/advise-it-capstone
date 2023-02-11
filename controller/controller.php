@@ -71,7 +71,7 @@ class Controller
             }
 
             // Require the credentials file, which defines a $Logins array
-            require('/home/plindsay/users.php');
+            require($_SERVER['DOCUMENT_ROOT'].'/../users.php');
             if (!isset($logins)) {
                 $this->_f3->set('errorMessage', "Failed to connect to server");
             }
@@ -163,6 +163,9 @@ class Controller
             // Store current token (if valid)
             if (Validator::validToken($_POST['token'])) {
                 $token = $_POST['token'];
+            }
+            if (isset($_POST['advisor'])) {
+                $advisor = $_POST['advisor'];
             }
 
             // Attempt to save data in POST to database
