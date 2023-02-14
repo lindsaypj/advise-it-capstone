@@ -5,11 +5,11 @@
 
 .navbar {
     padding: 0 !important;
-    background-color: #9fcdff;
+
 }
 
 .nav-grc {
-    background-color: rgb(234, 234, 226) !important;
+    background-color: #dee2e6 !important;
 }
 
 .nav-item {
@@ -32,15 +32,30 @@
 
 .grfont {
     font-family: greenRiverFont, serif;
+    background-color: #fcfbf4;
 }
 
 .saved {
     margin-right: 50px !important;
 }
+table{
+    border-collapse: collapse;
+}
+tbody{
+    font-family: arial, sans-serif;
+    background-color: #dee2e6;
+    padding: 5px;
+}
+td, tr{
+    border: 2px solid black;
+}
 
 /* CSS for printing */
 @media print {
     .navbar {
+        display: none !important;
+    }
+    button, hr{
         display: none !important;
     }
 

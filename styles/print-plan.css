@@ -5,6 +5,10 @@
 }
 
 @media print {
+    button{
+        display: none;
+    }
+
     /* Show printable plan */
     body #printPlan {
         display:block;
@@ -15,6 +19,7 @@
     #printPlan p.plan-content {
         white-space: pre-wrap;
     }
+
 
     /* Hide body */
     body #planPage {
