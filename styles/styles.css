@@ -43,11 +43,14 @@ table{
 }
 tbody{
     font-family: arial, sans-serif;
-    background-color: #dee2e6;
+    background-color: #d5d5d5;
     padding: 5px;
 }
 td, tr{
     border: 2px solid black;
+}
+tr:nth-of-type(even) td{
+    background-color: whitesmoke;
 }
 
 /* CSS for printing */
