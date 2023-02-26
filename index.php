@@ -56,6 +56,11 @@ $f3->route('GET|POST /print-plan/@token', function($f3) {
     $GLOBALS['con']->printPlan($f3->get('PARAMS.token'));
 });
 
+// Define Edit footer links page
+$f3->route('GET|POST /admin-footer-links', function($f3) {
+    $GLOBALS['con']->adminFooterLinks();
+});
+
 
 ////   RUN FAT FREE   ////
 
