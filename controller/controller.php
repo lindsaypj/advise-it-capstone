@@ -216,6 +216,10 @@ class Controller
         }
 
 
+
+        // Get links to render on the page
+        $links = $GLOBALS['datalayer']->getLinks();
+
         // Generate New Token for "Education Plan" Link
         $newToken = $GLOBALS['datalayer']->generateToken();
 
