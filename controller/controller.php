@@ -215,7 +215,11 @@ class Controller
             header('location: ./');
         }
 
-        $view = new Template();
-        echo $view->render('views/admin_footer_links.php');
+
+        // Generate New Token for "Education Plan" Link
+        $newToken = $GLOBALS['datalayer']->generateToken();
+
+        // Render page
+        include('views/admin_footer_links.php');
     }
 }
