@@ -329,4 +329,13 @@ class DataLayer
         }
         return $plan;
     }
+
+    function getLinks() {
+        $sql = "SELECT * FROM footer_links";
+        $sql = $this->_dbh->prepare($sql);
+        $sql->execute();
+
+        // Get query results
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
