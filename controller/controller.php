@@ -205,4 +205,17 @@ class Controller
         $view = new Template();
         echo $view->render('views/education_plan.html');
     }
+
+    // Method to render the admin footer links page if user is logged in
+    function adminFooterLinks() {
+        // Check that the user is logged in
+        if (!isset($_SESSION['logged-in']) || $_SESSION['logged-in'] != true || !isset($_SESSION['username'])) {
+            // Failed to log in (Render Login on Home page)
+            $_SESSION['displayLogin'] = true;
+            header('location: ./');
+        }
+
+        $view = new Template();
+        echo $view->render('views/admin_footer_links.php');
+    }
 }
