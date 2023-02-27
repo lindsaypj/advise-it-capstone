@@ -215,13 +215,59 @@ class Controller
             header('location: ./');
         }
 
-
-
         // Get links to render on the page
         $links = $GLOBALS['datalayer']->getLinks();
-
         // Generate New Token for "Education Plan" Link
         $newToken = $GLOBALS['datalayer']->generateToken();
+
+        $saveSuccess = null;
+        $saveMessage = "";
+
+        // Check for Form submission
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
+            // Handle New Footer Link
+            if (isset($_POST['add-link']) && isset($_POST['add-name'])) {
+                // Validate
+                $saveSuccess = Validator::validLink($_POST['add-name'], $_POST['add-link']);
+                if ($saveSuccess) {
+
+                    // Check if link name already exists
+                    if ($GLOBALS['datalayer']->footerLinkExists($_POST['add-name'])) {
+                        $saveSuccess = false;
+                        $saveMessage = "Link name already in use";
+                    }
+                    else {
+                        // Add to database
+                        $saveSuccess = $GLOBALS['datalayer']->addFooterLink($_POST['add-name'], $_POST['add-link']);
+                        if ($saveSuccess) {
+                            $saveMessage = $_POST['add-name']." Link Created!";
+
+                            // Add new link to links list to be rendered
+                            $newLink['name'] = $_POST['add-name'];
+                            $newLink['link'] = $_POST['add-link'];
+                            $links = Formatter::addToSortedLinks($links, $newLink);
+
+                            // Clear post data to prevent add form re-population
+                            $_POST = array();
+                        }
+                        else { // Error saving to database
+                            $saveMessage = "An error occurred while saving";
+                        }
+                    }
+                }
+                else { // Validation Failed
+                    $saveMessage = "Invalid Link";
+                }
+            }
+            // Handle Edit Footer Link
+            else if ($_POST['']) {
+
+            }
+            // Handle Delete Footer Link
+            else if ($_POST['']) {
+
+            }
+        }
 
         // Render page
         include('views/admin_footer_links.php');

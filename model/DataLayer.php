@@ -330,12 +330,35 @@ class DataLayer
         return $plan;
     }
 
-    function getLinks() {
-        $sql = "SELECT * FROM footer_links";
+    function getLinks()
+    {
+        $sql = "SELECT * FROM footer_links ORDER BY name";
         $sql = $this->_dbh->prepare($sql);
         $sql->execute();
 
         // Get query results
         return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function footerLinkExists($name) {
+        $sql = "SELECT * FROM footer_links WHERE name = :name";
+        $sql = $this->_dbh->prepare($sql);
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->execute();
+
+        // Get query results
+        return !empty($sql->fetch(PDO::FETCH_ASSOC));
+    }
+
+    function addFooterLink($name, $link)
+    {
+        $sql = "INSERT INTO footer_links (name, link)
+                VALUES (:name, :link)";
+        $sql = $this->_dbh->prepare($sql);
+
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->bindParam(':link', $link, PDO::PARAM_STR);
+
+        return $sql->execute();
     }
 }
