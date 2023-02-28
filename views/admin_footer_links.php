@@ -85,11 +85,25 @@ $saveMessage; // Stores the error/success message
                     <tbody>
                     <?php // Display links
                     foreach ($links as $index=>$link) {
-                        echo '<tr>'.
+                        echo '<tr id="row-'.$index.'">'.
                                 '<td>'.$link['name'].'</td>'.
-                                '<td><a href="'.$link['link'].'" target="blank">'.$link['link'].'</a></td>'.
-                                '<td><button class="btn btn-secondary py-0" id="edit-'.$index.'">Edit</button></td>'.
-                                '<td><button class="btn btn-secondary py-0" id="delete-'.$index.'">Delete</button></td>'.
+                                '<td>
+                                    <a href="'.$link['link'].'" target="blank">'.$link['link'].'</a>
+                                </td>'.
+                                '<td>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary py-0 edit-btn"
+                                        id="edit-'.$index.'"
+                                    >Edit</button>
+                                </td>'.
+                                '<td>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary py-0 delete-btn"
+                                        id="delete-'.$index.'"
+                                    >Delete</button>
+                                </td>'.
                             '</tr>';
                     }
                     ?>
@@ -194,6 +208,8 @@ $saveMessage; // Stores the error/success message
     </script>
     <!-- Front-End Validation -->
     <script src="./scripts/footerLinkValidation.js"></script>
+    <!-- Delete Confirmation -->
+    <script src="./scripts/footerLinkDeleteForm.js"></script>
 
     <?php // Save Notification controller
         if (isset($saveSuccess)) {

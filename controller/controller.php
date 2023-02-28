@@ -225,7 +225,8 @@ class Controller
 
         // Check for Form submission
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
-            // Handle New Footer Link
+
+            ///  Handle CREATE Footer Link  ///
             if (isset($_POST['add-link']) && isset($_POST['add-name'])) {
                 // Validate
                 $saveSuccess = Validator::validLink($_POST['add-name'], $_POST['add-link']);
@@ -259,13 +260,32 @@ class Controller
                     $saveMessage = "Invalid Link";
                 }
             }
-            // Handle Edit Footer Link
+            ///  Handle UPDATE Footer Link  ///
             else if ($_POST['']) {
 
             }
-            // Handle Delete Footer Link
-            else if ($_POST['']) {
+            ///  Handle DELETE Footer Link  ///
+            else if (isset($_POST['delete-link'])) {
+                // Check that link exists
+                if ($GLOBALS['datalayer']->footerLinkExists($_POST['delete-link'])) {
 
+                    // Attempt to delete
+                    $saveSuccess = $GLOBALS['datalayer']->deleteFooterLink($_POST['delete-link']);
+
+                    if ($saveSuccess) {
+                        // Create notification message
+                        $saveMessage = "Link deleted";
+                        // Remove link from display links
+                        $links = Formatter::removeLink($links, $_POST['delete-link']);
+                    }
+                    else {
+                        $saveMessage = "An error occurred while deleting";
+                    }
+                }
+                else { // Link does not exist
+                    $saveSuccess = false;
+                    $saveMessage = "Link does not exist";
+                }
             }
         }
 

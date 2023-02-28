@@ -32,6 +32,20 @@ class Formatter
         $links[] = $newLink;
         return $links;
     }
+
+    static function removeLink($links, $deleteLink) {
+        // Loop over links
+        for ($i = 0; $i < count($links); $i++) {
+
+            // Check if found delete link
+            if (strcmp($links[$i]['name'], $deleteLink) === 0) {
+                // Remove link
+                array_splice($links, $i, 1);
+                return $links;
+            }
+        }
+        return $links;
+    }
 }
 
 
