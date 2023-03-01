@@ -361,6 +361,17 @@ class DataLayer
 
         return $sql->execute();
     }
+    function updateFooterLink($name, $link) {
+        $sql = "UPDATE footer_links
+                SET link = :link
+                WHERE name = :name";
+        $sql = $this->_dbh->prepare($sql);
+
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->bindParam(':link', $link, PDO::PARAM_STR);
+
+        return $sql->execute();
+    }
 
     function deleteFooterLink($name) {
         $sql = "DELETE FROM footer_links WHERE name = :name";

@@ -209,8 +209,10 @@ $saveMessage; // Stores the error/success message
     </script>
     <!-- Front-End Validation -->
     <script src="./scripts/footerLinkValidation.js"></script>
-    <!-- Delete Confirmation -->
+    <!-- Delete Confirmation Form -->
     <script src="./scripts/footerLinkDeleteForm.js"></script>
+    <!-- Edit Form -->
+    <script src="./scripts/footerLinkEditForm.js"></script>
 
     <?php // Save Notification controller
         if (isset($saveSuccess)) {

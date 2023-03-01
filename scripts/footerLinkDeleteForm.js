@@ -16,29 +16,41 @@ function renderDeleteForm(event) {
     const clickedBtn = event.target;
     const linkIndex = clickedBtn.id.substr(7);
     const deleteLinkRow = document.getElementById("row-"+linkIndex);
+    const adjacentEditBtn = document.getElementById("edit-"+linkIndex);
 
     // Create confirmation form
-    deleteLinkRow.lastElementChild.innerHTML =
+    clickedBtn.insertAdjacentHTML('afterend',
     `<form method="post">
-        <button 
-            type="button"
-            class="btn btn-secondary py-0"
-            id="cancel-${linkIndex}"
-        >Cancel</button>
         <button
             type="submit"
-            class="btn btn-danger py-0"
-            id="delete-${linkIndex}"
+            class="btn btn-danger py-0 shadow"
+            id="delete-${linkIndex}-confirm"
         >DELETE</button>
         <input type="hidden" name="delete-link" value="${deleteLinkRow.firstElementChild.innerHTML}">
-    </form>`;
+    </form>`);
+
+    // Create Cancel button
+    adjacentEditBtn.insertAdjacentHTML('afterend',
+    `<button 
+            type="button"
+            class="btn btn-secondary py-0 shadow"
+            id="cancel-${linkIndex}"
+        >Cancel</button>`);
+
+    // Hide original buttons
+    adjacentEditBtn.classList.add("d-none");
+    clickedBtn.classList.add("d-none");
 
     // Add function to handle cancel
     const cancelBtn = document.getElementById("cancel-"+linkIndex);
+    const deleteForm = clickedBtn.nextElementSibling;
     cancelBtn.addEventListener('click', () => {
-        // Restore original delete button
-        deleteLinkRow.lastElementChild.innerHTML = clickedBtn.outerHTML;
-        deleteLinkRow.lastElementChild.firstElementChild.addEventListener('click', renderDeleteForm);
+        // Remove delete form buttons
+        deleteForm.remove();
+        cancelBtn.remove();
+        // Restore original buttons
+        adjacentEditBtn.classList.remove("d-none");
+        clickedBtn.classList.remove("d-none");
     });
 }
 

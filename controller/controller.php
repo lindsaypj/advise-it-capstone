@@ -260,10 +260,72 @@ class Controller
                     $saveMessage = "Invalid Link";
                 }
             }
-            ///  Handle UPDATE Footer Link  ///
-            else if ($_POST['']) {
 
+            ///  Handle UPDATE Footer Link  ///
+            else if (isset($_POST['edit-link']) && isset($_POST['new-name']) && isset($_POST['new-link'])) {
+                // Validate changed values
+                $saveSuccess = Validator::validLink($_POST['new-name'], $_POST['new-link']);
+                if ($saveSuccess) {
+
+                    // Check if name changed
+                    if ($_POST['edit-link'] !== $_POST['new-name']) {
+                        // Check if link name already exists
+                        if ($GLOBALS['datalayer']->footerLinkExists($_POST['new-name'])) {
+                            $saveSuccess = false;
+                            $saveMessage = "Link name already in use";
+                        }
+                        else { // Create new link and remove old (name changed)
+                            // Add to database
+                            $saveSuccess = $GLOBALS['datalayer']->addFooterLink($_POST['new-name'], $_POST['new-link']);
+                            if ($saveSuccess) { // Added updated link
+                                $saveMessage = $_POST['new-name']." link updated!";
+
+                                // Add "new" link to links list to be rendered
+                                $newLink['name'] = $_POST['new-name'];
+                                $newLink['link'] = $_POST['new-link'];
+                                $links = Formatter::addToSortedLinks($links, $newLink);
+
+                                // Remove old name (prevent duplicates)
+                                if ($GLOBALS['datalayer']->deleteFooterLink($_POST['edit-link'])) {
+                                    $links = Formatter::removeLink($links, $_POST['edit-link']);
+                                }
+                            }
+                            else { // Error saving updated link to database
+                                $saveMessage = "An error occurred while saving";
+                            }
+                        }
+                    }
+                    else { // Update link (name did not change)
+                        // Check that link actually exists
+                        if ($GLOBALS['datalayer']->footerLinkExists($_POST['new-name'])) {
+                            $saveSuccess = $GLOBALS['datalayer']->updateFooterLink($_POST['new-name'], $_POST['new-link']);
+                            if ($saveSuccess) { // Footer Link updated
+                                $saveMessage = $_POST['new-name']." link updated!";
+
+                                // Remove old link (prevent duplicates)
+                                $links = Formatter::removeLink($links, $_POST['edit-link']);
+
+                                // Update link in links list to be rendered
+                                $newLink['name'] = $_POST['new-name'];
+                                $newLink['link'] = $_POST['new-link'];
+                                $links = Formatter::addToSortedLinks($links, $newLink);
+                            }
+                            else { // Update Failed
+                                $saveSuccess = false;
+                                $saveMessage = "An error occurred while updating";
+                            }
+                        }
+                        else { // Link doesn't exist
+                            $saveSuccess = false;
+                            $saveMessage = "Link doesn't exist...";
+                        }
+                    }
+                }
+                else { // Validation Failed
+                    $saveMessage = "Invalid Link";
+                }
             }
+
             ///  Handle DELETE Footer Link  ///
             else if (isset($_POST['delete-link'])) {
                 // Check that link exists
