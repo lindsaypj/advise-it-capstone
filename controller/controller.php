@@ -288,7 +288,6 @@ class Controller
                 }
             }
         }
-
         // Render page
         include('views/admin_footer_links.php');
     }

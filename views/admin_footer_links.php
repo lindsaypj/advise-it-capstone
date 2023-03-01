@@ -50,13 +50,14 @@ $saveMessage; // Stores the error/success message
                         <h5 class="mb-0">Admin</h5>
                     </a>
                 </li>
-                <check if="$_SESSION['loggedIn'] === true">
-                    <li class="nav-item active">
-                        <a class="nav-link text-dark" href="logout">
-                            <h5 class="mb-0">Logout</h5>
-                        </a>
-                    </li>
-                </check>
+                <?php if($_SESSION['logged-in'] === true) {
+                    echo '<li class="nav-item active" >
+                        <a class="nav-link text-dark" href = "logout" >
+                            <h5 class="mb-0" > Logout</h5 >
+                        </a >
+                    </li >';
+                    }
+                ?>
             </ul>
         </div>
     </nav>
