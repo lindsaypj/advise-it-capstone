@@ -4,10 +4,10 @@ const prevYearBtn = document.getElementById("prevYearBtn");
 const nextYearBtn = document.getElementById("nextYearBtn");
 
 // Hide buttons on load if limit is reached
-window.onload = () => {
+window.addEventListener("load", () => {
     hideNextYear();
     hidePrevYear();
-}
+});
 
 // Handle next Year button click
 nextYearBtn.onclick = () => {

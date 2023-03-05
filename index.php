@@ -1,68 +1,59 @@
 <?php
-// 2/7/2023
-// Entry Point of the Advise-IT website
-// Initializes the Fat-Free Framework and defines the routing
-// interfaces with the controller
+// Include dependencies (ORDER IS REQUIRED)
+require_once('./model/Formatter.php');
+require_once('./model/Validator.php');
+require_once('./model/DataLayer.php');
+require_once('./controllers/controller.php');
 
 // Turn on error reporting
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Require the autoload file
-require_once('vendor/autoload.php');
-
-// Start Session
 session_start();
 
-// Create Instance of DataLayer
+// Initialize globals
+$controller = new Controller();
 $datalayer = new DataLayer();
 
-// Create an instance of the base class
-$f3 = Base::instance();
+// Get project file path relative to root (e.g. "/485/adviseitcapstone")
+$PROJECT_DIR = dirname($_SERVER['PHP_SELF']);
 
-// Create Instance of Controller
-$con = new Controller($f3);
+// Subtract project directory path from request to get relative request path
+$request = substr($_SERVER['REQUEST_URI'], strlen($PROJECT_DIR));
 
+// Parse token if passed in URL
+if (substr($request, 0, 5) === "/plan") {
+    // Extract token from "/plan/123ABC"
+    $token = substr($request, 6);
+    // Remove token for switch -> "/plan"
+    $request = substr($request, 0, 5);
+}
 
-
-////   ROUTES   ////
-
-// Define default route
-$f3->route('GET /', function() {
-    $GLOBALS['con']->home();
-});
-
-// Define route to handle login attempts on home page (POST)
-$f3->route('POST /', function() {
-    $GLOBALS['con']->loginAttempt();
-});
-
-// Define Admin route
-$f3->route('GET /admin', function() {
-    $GLOBALS['con']->admin();
-});
-
-$f3->route('GET /logout', function() {
-    $GLOBALS['con']->logout();
-});
-
-// Define View Plan page (handles new plan also)
-$f3->route('GET|POST /view-plan/@token', function($f3) {
-    $GLOBALS['con']->viewPlan($f3->get('PARAMS.token'));
-});
-
-// Define View Plan page
-$f3->route('GET|POST /print-plan/@token', function($f3) {
-    $GLOBALS['con']->printPlan($f3->get('PARAMS.token'));
-});
-
-// Define Edit footer links page
-$f3->route('GET|POST /admin-footer-links', function($f3) {
-    $GLOBALS['con']->adminFooterLinks();
-});
-
-
-////   RUN FAT FREE   ////
-
-// Run fat-free
-$f3->run();
+switch ($request) {
+    case '/':
+    case '':
+        // Handle post (login)
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $controller->login();
+        }
+        else {
+            $controller->home();
+        }
+        break;
+    case '/plan':
+        $controller->educationPlan($token);
+        break;
+    case '/admin':
+        $controller->admin();
+        break;
+    case '/admin-footer-links':
+        $controller->adminFooterLinks();
+        break;
+    case '/logout':
+        $controller->logout();
+        break;
+    default:
+        http_response_code(404);
+        require __DIR__ . ("/views/404.php");
+        break;
+}

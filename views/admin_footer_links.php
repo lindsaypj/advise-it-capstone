@@ -3,7 +3,6 @@
 // Link Data should be gotten from datalayer via controller
 
 // Variables used to render data (initialized in controller)
-$newToken; // Newly generated token for navbar education plan link
 $links; // Array of footer links to be rendered {$link.name, $link.link}
 $saveSuccess; // Indicates the state of the notification
 $saveMessage; // Stores the error/success message
@@ -24,43 +23,14 @@ $saveMessage; // Stores the error/success message
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
         crossorigin="anonymous"
     >
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/styles/styles.css">
 
     <title>Edit Footer Links</title>
 </head>
 <body>
-    <?php // Navbar ?>
-    <nav class="navbar navbar-expand-lg nav-grc sticky-top grfont shadow-sm">
-        <div>
-            <a class="text-dark d-block bg-grcgreen p-3" href="./">
-                <img src="https://www.greenriver.edu/media/site-assets/img/logo.png"
-                     class="gr-logo">
-            </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item active">
-                    <a class="nav-link text-dark" href="./view-plan/<?php echo $newToken ?>">
-                        <h5 class="mb-0">Education Plan</h5>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link text-dark" href="admin">
-                        <h5 class="mb-0">Admin</h5>
-                    </a>
-                </li>
-                <?php if($_SESSION['logged-in'] === true) {
-                    echo '<li class="nav-item active" >
-                        <a class="nav-link text-dark" href = "logout" >
-                            <h5 class="mb-0" > Logout</h5 >
-                        </a >
-                    </li >';
-                    }
-                ?>
-            </ul>
-        </div>
-    </nav>
+    <?php // Navbar
+        include "includes/navbar.php";
+    ?>
 
     <div class="container mt-2 pb-4 grfont">
         <?php // Header ?>
@@ -208,15 +178,15 @@ $saveMessage; // Stores the error/success message
             crossorigin="anonymous">
     </script>
     <!-- Front-End Validation -->
-    <script src="./scripts/footerLinkValidation.js"></script>
+    <script src="<?php echo $GLOBALS['PROJECT_DIR'] ?>/scripts/footerLinkValidation.js"></script>
     <!-- Delete Confirmation Form -->
-    <script src="./scripts/footerLinkDeleteForm.js"></script>
+    <script src="<?php echo $GLOBALS['PROJECT_DIR'] ?>/scripts/footerLinkDeleteForm.js"></script>
     <!-- Edit Form -->
-    <script src="./scripts/footerLinkEditForm.js"></script>
+    <script src="<?php echo $GLOBALS['PROJECT_DIR'] ?>/scripts/footerLinkEditForm.js"></script>
 
     <?php // Save Notification controller
         if (isset($saveSuccess)) {
-            echo '<script src="./scripts/saveNotification.js"></script>';
+            echo '<script src="'.$GLOBALS['PROJECT_DIR'].'/scripts/saveNotification.js"></script>';
         }
     ?>
 </body>

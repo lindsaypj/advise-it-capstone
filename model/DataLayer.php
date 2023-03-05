@@ -41,7 +41,6 @@ class DataLayer
         while(!(Validator::validToken($token)) || $this->planExists($token)) {
             $token = substr(str_shuffle($permitted_chars), 0, 6);
         }
-
         return $token;
     }
 
@@ -309,13 +308,16 @@ class DataLayer
 
         // Find lowest and highest years with data
         foreach ($plan['schoolYears'] as $year) {
-            if ($year['render'] == true) {
+            if (isset($year['render']) && $year['render'] == true) {
                 if ($year['winter']['calendarYear'] < $first) {
                     $first = $year['winter']['calendarYear'];
                 }
                 if ($year['winter']['calendarYear'] > $last) {
                     $last = $year['winter']['calendarYear'];
                 }
+            }
+            else {
+                $year['render'] = false;
             }
         }
 

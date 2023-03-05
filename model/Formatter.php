@@ -18,7 +18,10 @@ class Formatter
         return datefmt_format($fmt, $time);
     }
 
-    static function addToSortedLinks($links, $newLink) {
+    static function addToSortedLinks($links, $newName, $newAddress) {
+        $newLink['name'] = $newName;
+        $newLink['link'] = $newAddress;
+
         // Loop over links
         for ($i = 0; $i < count($links); $i++) {
 
@@ -47,7 +50,3 @@ class Formatter
         return $links;
     }
 }
-
-
-
-
