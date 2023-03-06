@@ -4,28 +4,19 @@ const prevYearBtnPlan = document.getElementById("prevYearBtn");
 const nextYearBtnPlan = document.getElementById("nextYearBtn");
 
 // Hide buttons on load if limit is reached
-window.onload = () => {
-
-
+window.addEventListener('load', () => {
     // Handle next Year button click
     if(nextYearBtnPlan !== null && nextYearBtnPlan !== undefined){
         hideNextYear(schoolYearsPlan, nextYearBtnPlan);
         nextYearBtnPlan.onclick = () =>  nextYearClick(schoolYearsPlan, nextYearBtnPlan);
 
     }
-
-
     // Handle previous Year button click
     if(prevYearBtnPlan !== null && prevYearBtnPlan !== undefined){
         hidePrevYear(schoolYearsPlan, prevYearBtnPlan);
         prevYearBtnPlan.onclick = () => prevYearClick(schoolYearsPlan, prevYearBtnPlan);
     }
-
-}
-
-
-
-
+});
 
 function nextYearClick (schoolYears, nextYearBtn) {
     const nextYear = parseInt(schoolYears.lastElementChild.id) + 1;
@@ -40,8 +31,6 @@ function nextYearClick (schoolYears, nextYearBtn) {
     }
 }
 
-
-
 function prevYearClick(schoolYears, prevYearBtn){
     const previousYear = parseInt(schoolYears.firstElementChild.id) - 1;
     const currentYear = new Date().getFullYear()
@@ -55,7 +44,6 @@ function prevYearClick(schoolYears, prevYearBtn){
         prevYearBtn.classList.add("d-none");
     }
 }
-
 
 function createNewYear(schoolYear) {
     return `

@@ -1,23 +1,32 @@
+<?php
+    // Required Variables to be assigned in controller
+    // IGNORE "Undefined variable" errors
+    $plans;
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 
     <!-- Styles -->
-	<link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-        crossorigin="anonymous"
+    <!-- Styles -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+            crossorigin="anonymous"
     >
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/styles/styles.css">
 
     <title>Admin Table</title>
 </head>
 
 <body class="">
     <!--NAVBAR-->
-    <include href="views/includes/navbar.html"></include>
+    <?php include "includes/navbar.php"; ?>
+
     <div class="container mt-2 grfont">
         <div class="row justify-content-center">
             <div class="col text-center">
@@ -38,18 +47,22 @@
                 </thead>
                 <tbody>
                     <!--Repeating section to show all data in table from database-->
-                    <repeat group="{{ @plans }}" value="{{ @plan }}">
-                        <tr>
-                            <td>{{ @plan.token }}</td>
-                            <td>
-                                <a href="view-plan/{{ @plan.token }}" target="_blank">
-                                    advise-it/view-plan/{{ @plan.token }}
-                                </a>
-                            </td>
-                            <td>{{ @plan.advisor }}</td>
-                            <td>{{ Formatter::formatTime(@plan.lastUpdated) }}</td>
-                        </tr>
-                    </repeat>
+                    <?php
+                        foreach ($plans as $plan) {
+                            $url = $GLOBALS['PROJECT_DIR'].'/plan/'.$plan['token'];
+                            echo
+                            '<tr>
+                                <td>'.$plan['token'].'</td>
+                                <td>
+                                    <a href="'.$url.'" target="_blank">
+                                        https://adviseit.greenriverdev.com'.$url.'
+                                    </a>
+                                </td>
+                                <td>'.$plan['advisor'].'</td>
+                                <td>'. Formatter::formatTime($plan['lastUpdated']) .'</td>
+                            </tr>';
+                        }
+                    ?>
                 </tbody>
             </table>
         </section>
@@ -62,7 +75,7 @@
         crossorigin="anonymous">
     </script>
     <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/scripts/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous">
     </script>

@@ -14,4 +14,19 @@ class Validator {
 
         return true;
     }
+
+    static function validLink($name, $link) {
+        // Validate Name
+        if (strlen($name) < 3) {
+            return false;
+        }
+        // Validate Link
+        if (substr($link, 0, 7) !== "http://" && substr($link, 0, 8) !== "https://") {
+            return false;
+        }
+        if (strlen($link) < 12) {
+            return false;
+        }
+        return true;
+    }
 }

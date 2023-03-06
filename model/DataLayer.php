@@ -41,7 +41,6 @@ class DataLayer
         while(!(Validator::validToken($token)) || $this->planExists($token)) {
             $token = substr(str_shuffle($permitted_chars), 0, 6);
         }
-
         return $token;
     }
 
@@ -309,13 +308,16 @@ class DataLayer
 
         // Find lowest and highest years with data
         foreach ($plan['schoolYears'] as $year) {
-            if ($year['render'] == true) {
+            if (isset($year['render']) && $year['render'] == true) {
                 if ($year['winter']['calendarYear'] < $first) {
                     $first = $year['winter']['calendarYear'];
                 }
                 if ($year['winter']['calendarYear'] > $last) {
                     $last = $year['winter']['calendarYear'];
                 }
+            }
+            else {
+                $year['render'] = false;
             }
         }
 
@@ -328,5 +330,55 @@ class DataLayer
             $plan['schoolYears'][$i]['render'] = true;
         }
         return $plan;
+    }
+
+    function getLinks()
+    {
+        $sql = "SELECT * FROM footer_links ORDER BY name";
+        $sql = $this->_dbh->prepare($sql);
+        $sql->execute();
+
+        // Get query results
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function footerLinkExists($name) {
+        $sql = "SELECT * FROM footer_links WHERE name = :name";
+        $sql = $this->_dbh->prepare($sql);
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->execute();
+
+        // Get query results
+        return !empty($sql->fetch(PDO::FETCH_ASSOC));
+    }
+
+    function addFooterLink($name, $link)
+    {
+        $sql = "INSERT INTO footer_links (name, link)
+                VALUES (:name, :link)";
+        $sql = $this->_dbh->prepare($sql);
+
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->bindParam(':link', $link, PDO::PARAM_STR);
+
+        return $sql->execute();
+    }
+    function updateFooterLink($name, $link) {
+        $sql = "UPDATE footer_links
+                SET link = :link
+                WHERE name = :name";
+        $sql = $this->_dbh->prepare($sql);
+
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        $sql->bindParam(':link', $link, PDO::PARAM_STR);
+
+        return $sql->execute();
+    }
+
+    function deleteFooterLink($name) {
+        $sql = "DELETE FROM footer_links WHERE name = :name";
+        $sql = $this->_dbh->prepare($sql);
+        $sql->bindParam(':name', $name, PDO::PARAM_STR);
+        return $sql->execute();
     }
 }
