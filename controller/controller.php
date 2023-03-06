@@ -134,6 +134,55 @@ class Controller
         $view = new Template();
         echo $view->render('views/admin.html');
     }
+    function admin_standard(){
+        if (!isset($_SESSION['logged-in']) || $_SESSION['logged-in'] != true || !isset($_SESSION['username'])) {
+            // Failed to log in (Render Login on Home page)
+            $_SESSION['displayLogin'] = true;
+            header('location: ./');
+        }
+        //get plan data
+        $winterPlan = $GLOBALS['datalayer']->getPlan('winter');
+        $fallPlan = $GLOBALS['datalayer']->getPlan('autumn');
+        $springPlan = $GLOBALS['datalayer']->getPlan('spring');
+
+        //parse the data how to load on page
+        $lastUpdatedWinter = Formatter::formatTime($winterPlan['lastUpdated']);
+        $lastUpdatedFall = Formatter::formatTime($fallPlan['lastUpdated']);
+        $lastUpdatedSpring = Formatter::formatTime($springPlan['lastUpdated']);
+
+
+        //school year data
+        $winterYear = $winterPlan['schoolYears'];
+        $fallYear = $fallPlan['schoolYears'];
+        $springYear = $springPlan['schoolYears'];
+
+
+
+
+        //Initialize variable
+        $formSubmitted = false;//set to false
+        $saveSuccess = false; // Determines state of confirmation message
+
+        //Check if current plan is submitted
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
+            $formSubmitted = true;
+
+            if(!Validator::validToken($_POST['token'])){
+                header('location: logout');
+            }
+            if($_POST['token'] !== "winter" && $_POST['token'] !== "spring" && $_POST['token'] !== "autumn"){
+                header('location: logout');
+            }
+            $saveSuccess = $GLOBALS['datalayer']->updatePlan($_POST['token']);
+            if($saveSuccess){
+                $saveMessage = $_POST['token']. " Plan Updated";
+            }
+
+        }
+
+        require("views/admin_standard.php");
+
+    }
 
     /**
      * Loads a plan if the passed token is valid. Handles form validation,

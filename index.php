@@ -56,7 +56,10 @@ $f3->route('GET|POST /print-plan/@token', function($f3) {
     $GLOBALS['con']->printPlan($f3->get('PARAMS.token'));
 });
 
-
+//Define Advisor edit page
+$f3->route('GET|POST /admin_standard', function ($f3){
+    $GLOBALS['con']->admin_standard();
+});
 ////   RUN FAT FREE   ////
 
 // Run fat-free
