@@ -28,9 +28,8 @@ $saveMessage; // Stores the error/success message
     <title>Edit Footer Links</title>
 </head>
 <body>
-    <?php // Navbar
-        include "includes/navbar.php";
-    ?>
+    <!-- NAVBAR -->
+    <?php include "includes/navbar.php"; ?>
 
     <div class="container mt-2 pb-4 grfont">
         <?php // Header ?>

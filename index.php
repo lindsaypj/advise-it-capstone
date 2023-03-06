@@ -15,7 +15,7 @@ session_start();
 $controller = new Controller();
 $datalayer = new DataLayer();
 
-// Get project file path relative to root (e.g. "/485/adviseitcapstone")
+// Get project file path relative to root (e.g. "/485/advise-it-capstone")
 $PROJECT_DIR = dirname($_SERVER['PHP_SELF']);
 
 // Subtract project directory path from request to get relative request path
@@ -48,6 +48,9 @@ switch ($request) {
         break;
     case '/admin-footer-links':
         $controller->adminFooterLinks();
+        break;
+    case '/standardized-plans':
+        $controller->adminStandard();
         break;
     case '/logout':
         $controller->logout();

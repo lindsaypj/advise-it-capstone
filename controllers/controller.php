@@ -158,6 +158,91 @@ class Controller {
         require 'views/admin.php';
     }
 
+    function adminStandard() {
+        // Check that the user is logged in
+        $this->checkLoggedIn();
+
+        //get plan data
+        $winterPlan = $GLOBALS['datalayer']->getPlan('winter');
+        $fallPlan = $GLOBALS['datalayer']->getPlan('autumn');
+        $springPlan = $GLOBALS['datalayer']->getPlan('spring');
+
+        //parse the data how to load on page
+        $lastUpdatedWinter = Formatter::formatTime($winterPlan['lastUpdated']);
+        $lastUpdatedFall = Formatter::formatTime($fallPlan['lastUpdated']);
+        $lastUpdatedSpring = Formatter::formatTime($springPlan['lastUpdated']);
+
+        //school year data
+        $winterYear = $winterPlan['schoolYears'];
+        $fallYear = $fallPlan['schoolYears'];
+        $springYear = $springPlan['schoolYears'];
+
+        //Initialize variable
+        $formSubmitted = false;//set to false
+        $saveSuccess = false; // Determines state of confirmation message
+
+        //Check if current plan is submitted
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)){
+            $formSubmitted = true;
+
+            // Validate token
+            if(!Validator::validToken($_POST['token'])){
+                header('location: logout');
+            }
+            if($_POST['token'] !== "winter" && $_POST['token'] !== "spring" && $_POST['token'] !== "autumn"){
+                header('location: logout');
+            }
+
+            // Attempt to update standardized plan
+            $saveSuccess = $GLOBALS['datalayer']->updatePlan($_POST['token']);
+            if($saveSuccess) {
+                // Get token data from database
+                $updatedPlan = $GLOBALS['datalayer']->getPlan($_POST['token']);
+
+                // Update Render data
+                switch($_POST['token']) {
+                    case "winter":
+                        // Check if Token is stored in database (new plans are not in database)
+                        if (!empty($updatedPlan['token'])) {
+                            $lastUpdatedWinter = Formatter::formatTime($updatedPlan['lastUpdated']);
+                            $winterYear = $updatedPlan['schoolYears'];
+                        }
+                        else { // No plan data (display current blank year)
+                            $winterYear = DataLayer::createBlankPlan()['schoolYears'];
+                        }
+                        $saveMessage = "Winter Plan Updated";
+                        break;
+                    case "spring":
+                        // Check if Token is stored in database (new plans are not in database)
+                        if (!empty($updatedPlan['token'])) {
+                            $lastUpdatedSpring = Formatter::formatTime($updatedPlan['lastUpdated']);
+                            $springYear = $updatedPlan['schoolYears'];
+                        }
+                        else { // No plan data (display current blank year)
+                            $springYear = DataLayer::createBlankPlan()['schoolYears'];
+                        }
+                        $saveMessage = "Spring Plan Updated";
+                        break;
+                    case "autumn":
+                        // Check if Token is stored in database (new plans are not in database)
+                        if (!empty($updatedPlan['token'])) {
+                            $lastUpdatedFall = Formatter::formatTime($updatedPlan['lastUpdated']);
+                            $fallYear = $updatedPlan['schoolYears'];
+                        }
+                        else { // No plan data (display current blank year)
+                            $fallYear = DataLayer::createBlankPlan()['schoolYears'];
+                        }
+                        $saveMessage = "Fall Plan Updated";
+                        break;
+                }
+            }
+            else {
+                $saveMessage = "An error occurred while updating plan";
+            }
+        }
+        require("views/admin_standard.php");
+    }
+
     // Method to render the admin footer links page if user is logged in
     function adminFooterLinks() {
         // Ensure that the user is logged in

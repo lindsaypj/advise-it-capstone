@@ -1,16 +1,24 @@
 
-const schoolYears = document.getElementById("schoolYears");
-const prevYearBtn = document.getElementById("prevYearBtn");
-const nextYearBtn = document.getElementById("nextYearBtn");
+const schoolYearsPlan = document.getElementById("schoolYears");
+const prevYearBtnPlan = document.getElementById("prevYearBtn");
+const nextYearBtnPlan = document.getElementById("nextYearBtn");
 
 // Hide buttons on load if limit is reached
-window.addEventListener("load", () => {
-    hideNextYear();
-    hidePrevYear();
-});
+window.onload = () => {
+    // Handle next Year button click
+    if(nextYearBtnPlan !== null && nextYearBtnPlan !== undefined){
+        hideNextYear(schoolYearsPlan, nextYearBtnPlan);
+        nextYearBtnPlan.onclick = () =>  nextYearClick(schoolYearsPlan, nextYearBtnPlan);
 
-// Handle next Year button click
-nextYearBtn.onclick = () => {
+    }
+    // Handle previous Year button click
+    if(prevYearBtnPlan !== null && prevYearBtnPlan !== undefined){
+        hidePrevYear(schoolYearsPlan, prevYearBtnPlan);
+        prevYearBtnPlan.onclick = () => prevYearClick(schoolYearsPlan, prevYearBtnPlan);
+    }
+}
+
+function nextYearClick (schoolYears, nextYearBtn) {
     const nextYear = parseInt(schoolYears.lastElementChild.id) + 1;
 
     // Prevent adding years beyond 2040
@@ -23,8 +31,7 @@ nextYearBtn.onclick = () => {
     }
 }
 
-// Handle previous Year button click
-prevYearBtn.onclick = () => {
+function prevYearClick(schoolYears, prevYearBtn){
     const previousYear = parseInt(schoolYears.firstElementChild.id) - 1;
     const currentYear = new Date().getFullYear()
 
@@ -37,7 +44,6 @@ prevYearBtn.onclick = () => {
         prevYearBtn.classList.add("d-none");
     }
 }
-
 
 function createNewYear(schoolYear) {
     return `
@@ -136,7 +142,7 @@ function createNewYear(schoolYear) {
     </div>`;
 }
 
-function hideNextYear() {
+function hideNextYear(schoolYears, nextYearBtn) {
     const nextYear = parseInt(schoolYears.lastElementChild.id) + 1;
 
     // Remove button when max years reached
@@ -145,7 +151,7 @@ function hideNextYear() {
     }
 }
 
-function hidePrevYear() {
+function hidePrevYear(schoolYears, prevYearBtn) {
     const previousYear = parseInt(schoolYears.firstElementChild.id) - 1;
     const currentYear = new Date().getFullYear()
 
