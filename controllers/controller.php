@@ -22,7 +22,44 @@ class Controller {
         // Render the view
         require 'views/home.php';
     }
+    function studentPlan($token){
+        //if token is not set or not a token or token is not a string
+        if ((!(isset($token))) || !$token || gettype($token) !== "string"){
+            http_response_code(404);
+            require ("views/404.php");
+            return; // Escape Controller
+        }
 
+
+        // If token is invalid, redirect to home
+        if (!(Validator::validToken($token))) {
+            http_response_code(404);
+            require ($GLOBALS['PROJECT_DIR'] . "/views/404.php");
+            return; // Escape Controller
+        }
+
+        // Initialize Variables to determine rendering characteristics
+        $lastUpdated = ""; // Variable to store most recent save time
+        $advisor = "";
+
+        // Get token data from database
+        $plan = $GLOBALS['datalayer']->getPlan($token);
+
+        // Check if Token is stored in database
+        if (empty($plan['token'])) {
+            http_response_code(404);
+            require ($GLOBALS['PROJECT_DIR'] . "/views/404.php");
+            return; // Escape Controller
+        }
+
+        $token = $plan['token'];
+        $lastUpdated = Formatter::formatTime($plan['lastUpdated']);
+        $advisor = $plan['advisor'];
+        $schoolYears = $plan['schoolYears'];
+
+        //Render the page
+        require 'views/student_plan.php';
+    }
     function educationPlan($token) {
         // Generate Token if not passed
         if ((!(isset($token))) || !$token || gettype($token) !== "string") {
@@ -30,6 +67,7 @@ class Controller {
             // Add token to URL
             header('location: '.$GLOBALS['PROJECT_DIR'].'/plan/'.$token);
         }
+
 
         // If token is invalid, redirect to home
         if (!(Validator::validToken($token))) {

@@ -33,15 +33,7 @@ function adminPlan ($schoolYears){
             echo
                 '<div id="'.$schoolYear['winter']['calendarYear'].'" class="container p-0">
 
-                    <!-- Year Separator -->
-                    <div class="col-sm">
-                        <h3 class="text-end text-secondary mb-0">'.$calendarYear.'</h3>
-                        <input
-                                type="hidden"
-                                value="'.$calendarYear.'"
-                                name="schoolYears['.$calendarYear.'][schoolYear]"
-                        >
-                    </div>
+                    
                     <hr class="shadow-sm mt-0">
 
                     <div class="row">

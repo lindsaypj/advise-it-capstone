@@ -39,6 +39,10 @@
                             <h5 class="mb-0">Logout</h5>
                         </a>
                     </li>';
+
+
+                echo include "print.php";
+
             }
             else {
                 echo '<li class="nav-item active">
@@ -46,6 +50,8 @@
                             <h5 class="mb-0">Admin</h5>
                         </a>
                     </li>';
+
+
             }
             ?>
         </ul>
@@ -55,28 +61,28 @@
             echo
             '<div class="float-centered text-center mt-2 saved">
                 <span class="d-block text-dark">
-                    <h5>Last Saved: '.$lastUpdated.'</h5>
+                    <h4>Last Saved: '.$lastUpdated.'</h4>
                 </span>
             </div>';
         }
         else if (isset($lastUpdatedWinter) && !empty($lastUpdatedWinter)) {
             echo '<div class="float-centered text-center mt-2 saved d-none">
                     <span class="d-block text-dark">
-                            <h5>Last Saved: '.$lastUpdatedWinter.'</h5>
+                            <h4>Last Saved: '.$lastUpdatedWinter.'</h4>
                     </span>
                 </div>';
         }
         else if (isset($lastUpdatedSpring) && !empty($lastUpdatedSpring)) {
             echo '<div class="float-centered text-center mt-2 saved d-none">
                     <span class="d-block text-dark">
-                            <h5>Last Saved: '.$lastUpdatedSpring.'</h5>
+                            <h4>Last Saved: '.$lastUpdatedSpring.'</h4>
                     </span>
                 </div>';
         }
         else if (isset($lastUpdatedFall) && !empty($lastUpdatedFall)) {
             echo '<div class="float-centered text-center mt-2 saved d-none">
                     <span class="d-block text-dark">
-                            <h5>Last Saved: '.$lastUpdatedFall.'</h5>
+                            <h4>Last Saved: '.$lastUpdatedFall.'</h4>
                     </span>
                 </div>';
         }
