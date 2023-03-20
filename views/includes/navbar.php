@@ -10,10 +10,22 @@
         <ul class="navbar-nav align-items-center w-100">
             <li class="nav-item active">
                 <a class="nav-link text-dark" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/plan">
-                    <h5 class="mb-0">Education Plan</h5>
+                    <h5 class="mb-0">Blank Plan</h5>
                 </a>
             </li>
-            <?php
+            <?php ////   Standard Plan Selection (only show on plan page)   ////
+            if ($GLOBALS['request'] === "/plan") {
+                echo '<li class="nav-item active">
+                        <button
+                            class="nav-link text-dark border-0 bg-transparent fs-5"
+                            data-bs-toggle="modal"
+                            data-bs-target="#standardPlanModal"
+                        >Use Standard Plan</button>
+                    </li>';
+            }
+            ?>
+
+            <?php ////   ADMIN LINKS (LOGIN REQUIRED)   ////
             if (isset($_SESSION['logged-in']) && $_SESSION['logged-in'] === true) {
                 // All plans page
                 echo '<li class="nav-item active">

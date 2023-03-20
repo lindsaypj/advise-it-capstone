@@ -23,12 +23,17 @@ class Controller {
         require 'views/home.php';
     }
 
+    /**
+     * @param $token
+     * @return void
+     */
     function educationPlan($token) {
         // Generate Token if not passed
         if ((!(isset($token))) || !$token || gettype($token) !== "string") {
             $token = $GLOBALS['datalayer']->generateToken();
             // Add token to URL
             header('location: '.$GLOBALS['PROJECT_DIR'].'/plan/'.$token);
+            return; // Escape Controller
         }
 
         // If token is invalid, redirect to home
@@ -76,23 +81,38 @@ class Controller {
         }
 
         // Get token data from database
-        $plan = $GLOBALS['datalayer']->getPlan($token);
+        // If standard plan was requested, load that instead
+        if (isset($_SESSION['query']) && isset($_SESSION['query']['standardQuarter']) && isset($_SESSION['query']['standardYear'])) {
+            // Get standardized plan
+            $plan = $GLOBALS['datalayer']->getPlan($_SESSION['query']['standardQuarter']);
 
-        // Check if Token is stored in database (new plans are not in database)
-        if (!empty($plan['token'])) {
-            $token = $plan['token'];
-            $lastUpdated = Formatter::formatTime($plan['lastUpdated']);
-            $advisor = $plan['advisor'];
-            $schoolYears = $plan['schoolYears'];
+            // Reformat to selected starting year
+            if (isset($plan['schoolYears'])) {
+                $schoolYears = Formatter::shiftStartYear($plan['schoolYears'], $_SESSION['query']['standardYear'], $_SESSION['query']['standardQuarter']);
+            }
+
+            // CLEAR SESSION QUERY TO PREVENT UNWANTED DATA OVERWRITE
+            unset($_SESSION['query']);
         }
-        else { // No plan data (display current blank year)
-            $schoolYears = DataLayer::createBlankPlan()['schoolYears'];
+        else {
+            // Load plan data (or blank plan)
+            $plan = $GLOBALS['datalayer']->getPlan($token);
+
+            // Check if Token is stored in database (new plans are not in database)
+            if (!empty($plan['token'])) {
+                $token = $plan['token'];
+                $lastUpdated = Formatter::formatTime($plan['lastUpdated']);
+                $advisor = $plan['advisor'];
+                $schoolYears = $plan['schoolYears'];
+            }
+            else { // No plan data (display current blank year)
+                $schoolYears = DataLayer::createBlankPlan()['schoolYears'];
+            }
         }
 
         // Render the view
         require 'views/education_plan.php';
     }
-
 
     function login() {
         // Ensure form has been submitted

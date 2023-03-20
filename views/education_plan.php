@@ -77,17 +77,16 @@
                                  echo
                                  '<div id="'.$year.'" class="container p-0">
 
-								<!-- Year Separator -->
-								<div class="col-sm">
-									<h3 class="text-end text-secondary mb-0">'.$year.'</h3>
-									<input
-										type="hidden"
-										value="'.$year.'"
-										name="schoolYears['.$year.'][schoolYear]"
-									>
-								</div>
+                                <!-- Year Separator -->
 								<hr class="shadow-sm mt-0">
-
+								
+								<!-- Pass school year to POST -->
+								<input
+                                    type="hidden"
+                                    value="'.$year.'"
+                                    name="schoolYears['.$year.'][schoolYear]"
+                                >
+                                
 								<div class="row">
 									<!-- Fall Quarter -->
 									<div class="col-sm">
@@ -191,7 +190,11 @@
 		</div>
 	</div>
 
-	<!-- Save Notification -->
+    <?php ////   STANDARD PLAN SELECTOR (Activated via button in nav)   ////
+        include "includes/standard_plan_selection.php";
+    ?>
+
+    <!-- Save Notification -->
     <?php
     if (isset($formSubmitted)) {
         if ($saveSuccess === true) {
@@ -229,6 +232,12 @@
 			crossorigin="anonymous"></script>
 	<!-- Script to add years to form -->
 	<script src="../scripts/addYearsToForm.js"></script>
+
+    <!-- Script to handle Standard Plan Selection -->
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/standardPlanSelection.js"></script>
+
+    <!-- Script to handle Print button -->
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/printPlan.js"></script>
 
     <?php // Save Notification controller
     if ($formSubmitted) {

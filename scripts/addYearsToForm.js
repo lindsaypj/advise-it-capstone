@@ -4,7 +4,7 @@ const prevYearBtnPlan = document.getElementById("prevYearBtn");
 const nextYearBtnPlan = document.getElementById("nextYearBtn");
 
 // Hide buttons on load if limit is reached
-window.onload = () => {
+window.addEventListener('load', () => {
     // Handle next Year button click
     if(nextYearBtnPlan !== null && nextYearBtnPlan !== undefined){
         hideNextYear(schoolYearsPlan, nextYearBtnPlan);
@@ -16,7 +16,7 @@ window.onload = () => {
         hidePrevYear(schoolYearsPlan, prevYearBtnPlan);
         prevYearBtnPlan.onclick = () => prevYearClick(schoolYearsPlan, prevYearBtnPlan);
     }
-}
+});
 
 function nextYearClick (schoolYears, nextYearBtn) {
     const nextYear = parseInt(schoolYears.lastElementChild.id) + 1;
@@ -51,15 +51,14 @@ function createNewYear(schoolYear) {
         <div class="row">
         
             <!-- Year Separator -->
-            <div class="col-sm">
-                <h3 class="text-end text-secondary mb-0">${schoolYear}</h3>
-                <input
-                    type="hidden"
-                    value="${schoolYear}"
-                    name="schoolYears[${schoolYear}][schoolYear]"
-                >
-            </div>
             <hr class="shadow-sm mt-0">
+            
+            <!-- Pass school year to POST -->
+            <input
+                type="hidden"
+                value="'.$year.'"
+                name="schoolYears['.$year.'][schoolYear]"
+            >           
 								
             <!-- Fall Quarter -->
             <div class="col-sm">

@@ -29,12 +29,20 @@
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col text-center">
-				<h1 class="pt-5 pb-3">Home Page</h1>
+				<h1 class="pt-5 pb-3">New Education Plan</h1>
 				<hr>
+                <!-- Standard Plan Selector -->
+                <button
+                        type="button"
+                        class="btn btn-lg m-3 mt-3 bg-grcgreen text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#standardPlanModal"
+                >Use Standard Plan</button>
+                <?php include "includes/standard_plan_selection.php"; ?>
 				<a
 					href="plan"
 					class="btn btn-lg m-3 mt-3 bg-grcgreen text-white"
-				>New Education Plan</a>
+				>Blank Plan</a>
 			</div>
 		</div>
 	</div>
@@ -83,6 +91,8 @@
 		crossorigin="anonymous"
 	></script>
 
+    <!-- Script to handle Standard Plan Selection -->
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/standardPlanSelection.js"></script>
 
 	<?php // Open Login modal if attempt was made
     if (isset($displayLoginForm) && $displayLoginForm === true) {
