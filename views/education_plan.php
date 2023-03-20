@@ -32,9 +32,63 @@
 </head>
 
 <body>
-	<!--NAVBAR-->
-	<?php include "includes/navbar.php"; ?>
+<nav class="navbar navbar-expand-lg nav-grc sticky-top grfont shadow-sm">
+    <div>
+        <a class="text-dark d-block bg-grcgreen p-3" href="<?php echo $GLOBALS['PROJECT_DIR']; ?>">
+            <img src="https://www.greenriver.edu/media/site-assets/img/logo.png"
+                 class="gr-logo">
+        </a>
+    </div>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav align-items-center w-100">
+            <li class="nav-item active">
+                <a class="nav-link text-dark" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/plan">
+                    <h5 class="mb-0">Education Plan</h5>
+                </a>
+            </li>
+            <?php
+            if (isset($_SESSION['logged-in']) && $_SESSION['logged-in'] === true) {
+                // All plans page
+                echo '<li class="nav-item active">
+                        <a class="nav-link text-dark" href="'.$GLOBALS['PROJECT_DIR'].'/admin">
+                            <h5 class="mb-0">All Plans</h5>
+                        </a>
+                    </li>';
+                // Edit footer links
+                echo '<li class="nav-item active">
+                        <a class="nav-link text-dark" href="'.$GLOBALS['PROJECT_DIR'].'/admin-footer-links">
+                            <h5 class="mb-0">Footer Links</h5>
+                        </a>
+                    </li>';
+                // Standardized Plans
+                echo '<li class="nav-item active">
+                        <a class="nav-link text-dark" href="'.$GLOBALS['PROJECT_DIR'].'/standardized-plans">
+                            <h5 class="mb-0">Standardized Plans</h5>
+                        </a>
+                    </li>';
+                // Logout link
+                echo '<li class="nav-item active">
+                        <a class="nav-link text-dark" href="'.$GLOBALS['PROJECT_DIR'].'/logout">
+                            <h5 class="mb-0">Logout</h5>
+                        </a>
+                    </li>';
+            }
+            else {
+                echo '<li class="nav-item active">
+                        <a class="nav-link text-dark" href="'.$GLOBALS['PROJECT_DIR'].'/admin">
+                            <h5 class="mb-0">Admin</h5>
+                        </a>
+                    </li>';
+
+
+            }
+            include "includes/print.php";
+            ?>
+        </ul>
+    </div>
+    <?php include "includes/last_updated.php"; ?>
+</nav>
     <!-- PLAN -->
 	<div class="container mt-2 mb-5 pb-5 grfont">
 		<div class="row justify-content-center mb-5 pb-5">
@@ -229,6 +283,7 @@
 			crossorigin="anonymous"></script>
 	<!-- Script to add years to form -->
 	<script src="../scripts/addYearsToForm.js"></script>
+<!--    <script src="../scripts/printPlan.js"></script>-->
 
     <?php // Save Notification controller
     if ($formSubmitted) {

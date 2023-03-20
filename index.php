@@ -21,12 +21,19 @@ $PROJECT_DIR = dirname($_SERVER['PHP_SELF']);
 // Subtract project directory path from request to get relative request path
 $request = substr($_SERVER['REQUEST_URI'], strlen($PROJECT_DIR));
 
+
 // Parse token if passed in URL
 if (substr($request, 0, 5) === "/plan") {
     // Extract token from "/plan/123ABC"
     $token = substr($request, 6);
     // Remove token for switch -> "/plan"
     $request = substr($request, 0, 5);
+}
+else if(substr($request, 0, 13) === "/student-plan"){
+    //Extract the token from "/student-plan/123ABC"
+    $token = substr($request, 14);
+    //Remove token for switch -> "/student-plan"
+    $request = substr($request, 0, 13);
 }
 
 switch ($request) {
@@ -51,6 +58,9 @@ switch ($request) {
         break;
     case '/standardized-plans':
         $controller->adminStandard();
+        break;
+    case '/student-plan':
+        $controller->studentPlan($token);
         break;
     case '/logout':
         $controller->logout();

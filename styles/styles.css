@@ -52,12 +52,14 @@ td, tr{
 tr:nth-of-type(even) td{
     background-color: whitesmoke;
 }
+button{
+    border: none;
+    background: none;
+}
 
 /* CSS for printing */
 @media print {
-    .navbar {
-        display: none !important;
-    }
+
     button, hr{
         display: none !important;
     }
@@ -71,4 +73,5 @@ tr:nth-of-type(even) td{
         background-color: grey !important;
         color: black !important;
     }
+
 }
