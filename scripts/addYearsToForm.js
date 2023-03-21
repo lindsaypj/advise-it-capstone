@@ -56,12 +56,12 @@ function createNewYear(schoolYear) {
             <!-- Pass school year to POST -->
             <input
                 type="hidden"
-                value="'.$year.'"
-                name="schoolYears['.$year.'][schoolYear]"
+                value="${schoolYear}"
+                name="schoolYears[${schoolYear}][schoolYear]"
             >           
 								
             <!-- Fall Quarter -->
-            <div class="col-sm">
+            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                 <div>
                     <h4 class="d-inline">Fall Quarter</h4>
                     <h5>${schoolYear - 1}</h5>
@@ -80,7 +80,7 @@ function createNewYear(schoolYear) {
                 </div>
             </div>
             <!-- Winter Quarter -->
-            <div class="col-sm">
+            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                 <div>
                     <h4 class="d-inline">Winter Quarter</h4>
                     <h5>${schoolYear}</h5>
@@ -98,11 +98,9 @@ function createNewYear(schoolYear) {
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row mt-5">
             <!-- Spring Quarter -->
-            <div class="col-sm">
+            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                 <div>
                     <h4 class="d-inline">Spring Quarter</h4>
                     <h5>${schoolYear}</h5>
@@ -120,7 +118,7 @@ function createNewYear(schoolYear) {
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                 <div>
                     <h4 class="d-inline">Summer Quarter</h4>
                     <h5>${schoolYear}</h5>

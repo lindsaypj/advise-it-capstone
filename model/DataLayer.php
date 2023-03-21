@@ -16,10 +16,8 @@ class DataLayer
      * Constructor for DataLayer Objects. Instantiates the PDO object for
      * requesting data from the database.
      */
-    function __construct()
+    function __construct($dbh)
     {
-        // Get PDO object
-        require_once($_SERVER['DOCUMENT_ROOT'].'/../config.php');
         $this->_dbh = $dbh;
 
         // Enable Error reporting
@@ -88,7 +86,7 @@ class DataLayer
         if (empty($quarters)) {
             // If token is present but no quarter data is found
             if (!empty($plan['token'])) {
-                return $plan['schoolYears'] = self::createBlankPlan()['schoolYears'];
+                return $plan['schoolYears'] = (self::createBlankPlan($plan['token'])['schoolYears']);
             }
             return $plan;
         }
@@ -272,23 +270,33 @@ class DataLayer
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    static function createBlankPlan()
+    static function createBlankPlan($token)
     {
-        // Get data
-        $currentSchoolYear = self::getCurrentSchoolYear();
+        $plan['token'] = $token;
 
-        $plan['schoolYears'][$currentSchoolYear] = []; // Add current year
-        $plan['schoolYears'][$currentSchoolYear]['render'] = true; // Set year to render
-        $plan['schoolYears'][$currentSchoolYear]['fall']['notes'] = ""; // Initialize notes to empty
-        $plan['schoolYears'][$currentSchoolYear]['winter']['notes'] = "";
-        $plan['schoolYears'][$currentSchoolYear]['spring']['notes'] = "";
-        $plan['schoolYears'][$currentSchoolYear]['summer']['notes'] = "";
-        $plan['schoolYears'][$currentSchoolYear]['fall']['calendarYear'] = $currentSchoolYear - 1; // Set calendar Years
-        $plan['schoolYears'][$currentSchoolYear]['winter']['calendarYear'] = $currentSchoolYear;
-        $plan['schoolYears'][$currentSchoolYear]['spring']['calendarYear'] = $currentSchoolYear;
-        $plan['schoolYears'][$currentSchoolYear]['summer']['calendarYear'] = $currentSchoolYear;
+        return self::createBlankSchoolYears($plan, self::getCurrentSchoolYear());
+    }
+
+    static function createBlankSchoolYears($plan, $year) {
+
+        $plan['schoolYears'][$year] = self::createBlankYear($year);
 
         return $plan;
+    }
+
+    static function createBlankYear($year) {
+        $output = [];
+        $output['render'] = true; // Set year to render
+        $output['fall']['notes'] = ""; // Initialize notes to empty
+        $output['winter']['notes'] = "";
+        $output['spring']['notes'] = "";
+        $output['summer']['notes'] = "";
+        $output['fall']['calendarYear'] = $year - 1; // Set calendar Years
+        $output['winter']['calendarYear'] = $year;
+        $output['spring']['calendarYear'] = $year;
+        $output['summer']['calendarYear'] = $year;
+
+        return $output;
     }
 
     static function getCurrentSchoolYear(): int
@@ -323,7 +331,7 @@ class DataLayer
 
         // Check if any years were found
         if ($first == 3000 || $last == 0) {
-            return self::createBlankPlan();
+            return self::createBlankSchoolYears($plan, self::getCurrentSchoolYear());
         }
         // Mark middle years for render
         for ($i = $first; $i < $last; $i++) {

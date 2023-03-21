@@ -50,9 +50,9 @@ class Formatter
         return $links;
     }
 
-    static function shiftStartYear($schoolYears, $startYear, $quarter) {
+    static function shiftStartYear($plan, $startYear, $startQuarter) {
         // Sort years in ascending order (2000, 2001, 2002...)
-        ksort($schoolYears);
+        ksort($plan['schoolYears']);
 
         // Output variable
         $formattedYears = [];
@@ -60,15 +60,11 @@ class Formatter
         // Determine initial offset (Fall Quarter is 2020, while the rest are 2021)
         // This step is required to convert Calendar Year to School Year
         $incrementOffset = 0;
-        if ($quarter === "AUTUMN") {
+        if ($startQuarter === "AUTUMN") {
             $incrementOffset = 1;
         }
-
-        // Track number of years to render (should always be 2 years with standard plan)
-        $renderCount = 0;
-
         // Store the plan data under the correct school years
-        foreach ($schoolYears as $schoolYear) {
+        foreach ($plan['schoolYears'] as $schoolYear) {
             // Update calendar year for each quarter in each school year
             foreach($schoolYear as $key=>$quarter) {
                 // ignore "render" property
@@ -79,25 +75,13 @@ class Formatter
                         $quarter['calendarYear'] = $startYear + $incrementOffset;
                     }
                 }
-                // Ensure that 2 years render
-                else if ($key === "render") {
-                    if ($renderCount < 2) {
-                        // Set render to true (quarter is actually render property
-                        $quarter = true;
-                        $renderCount++;
-                    }
-                }
             }
+            // Render standard school year always
+            $schoolYear['render'] = true;
+
             // Store school year in output array
             $formattedYears[$startYear+$incrementOffset] = $schoolYear;
             $incrementOffset++;
-        }
-
-        // Ensure that 2 school years are always present
-        if ($renderCount < 2) {
-            // Add blank year to school years if only 1 is present
-            $blankYear = DataLayer::createBlankPlan()['schoolYears'][DataLayer::getCurrentSchoolYear()];
-            $formattedYears[$startYear+$incrementOffset] = $blankYear;
         }
         return $formattedYears;
     }

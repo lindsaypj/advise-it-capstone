@@ -11,29 +11,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!--	Works-->
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- Styles -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-            crossorigin="anonymous"
-    >
-    <link rel="stylesheet" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/styles/styles.css">
-
-	<!-- Jquery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <?php require "includes/head-includes.php"?>
 
 	<title>Education Plan</title>
 </head>
 
 <body>
-	<!--NAVBAR-->
-	<?php include "includes/navbar.php"; ?>
+    <!--NAVBAR-->
+    <?php include "includes/navbar.php"; ?>
 
     <!-- PLAN -->
 	<div class="container mt-2 mb-5 pb-5 grfont">
@@ -41,7 +26,7 @@
 			<div class="col text-center">
 				<h1 class="pt-5">Educational Planning Worksheet</h1>
 
-				<form class="col-lg-8 offset-lg-2" method="post">
+				<form class="col-lg-8 offset-lg-2 col-xxl-10 offset-xxl-1" method="post">
 					<div class="form-group text-center mb-2">
 						<h4>Student Token: <?php echo $token; ?></h4>
 						<!-- Token Input -->
@@ -62,7 +47,7 @@
 						>
 					</label>
 
-					<div class="float-centered mt-5">
+					<div class="float-centered mt-5 mb-3">
 						<button
 							id="prevYearBtn"
 							class="btn btn-lg bg-secondary text-white shadow-sm"
@@ -75,7 +60,7 @@
 						 foreach ($schoolYears as $year=>$schoolYear) {
                              if (isset($schoolYear['render'])) {
                                  echo
-                                 '<div id="'.$year.'" class="container p-0">
+                                 '<div id="'.($year).'" class="container p-0">
 
                                 <!-- Year Separator -->
 								<hr class="shadow-sm mt-0">
@@ -83,13 +68,13 @@
 								<!-- Pass school year to POST -->
 								<input
                                     type="hidden"
-                                    value="'.$year.'"
-                                    name="schoolYears['.$year.'][schoolYear]"
+                                    value="'.($year).'"
+                                    name="schoolYears['.($year).'][schoolYear]"
                                 >
                                 
 								<div class="row">
 									<!-- Fall Quarter -->
-									<div class="col-sm">
+									<div class="col-12 col-sm-6 col-xxl-3 col-6-print">
 										<div>
 											<h4 class="d-inline">Fall Quarter</h4>
 											<h5>'.($year -1).'</h5>
@@ -108,7 +93,7 @@
 										</div>
 									</div>
 									<!-- Winter Quarter -->
-									<div class="col-sm">
+									<div class="col-12 col-sm-6 col-xxl-3 col-6-print">
 										<div>
 											<h4 class="d-inline">Winter Quarter</h4>
 											<h5>'.$year.'</h5>
@@ -126,11 +111,9 @@
 											</div>
 										</div>
 									</div>
-								</div>
 
-								<div class="row mt-5">
 									<!-- Spring Quarter -->
-									<div class="col-sm">
+									<div class="col-12 col-sm-6 col-xxl-3 col-6-print">
 										<div>
 											<h4 class="d-inline">Spring Quarter</h4>
 											<h5>'.$year.'</h5>
@@ -148,7 +131,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-sm">
+									<!-- Summer Quarter -->
+									<div class="col-12 col-sm-6 col-xxl-3 col-6-print">
 										<div>
 											<h4 class="d-inline">Summer Quarter</h4>
 											<h5>'.$year.'</h5>
@@ -223,21 +207,18 @@
     }
     ?>
 
-	<!--Including the JS for the file-->
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-			integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-			crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-			integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-			crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <?php require "includes/bootstrap-js.html"?>
+
 	<!-- Script to add years to form -->
 	<script src="../scripts/addYearsToForm.js"></script>
+<!--    <script src="../scripts/printPlan.js"></script>-->
 
     <!-- Script to handle Standard Plan Selection -->
     <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/standardPlanSelection.js"></script>
 
     <!-- Script to handle Print button -->
-    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/printPlan.js"></script>
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/print.js"></script>
 
     <?php // Save Notification controller
     if ($formSubmitted) {

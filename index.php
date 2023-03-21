@@ -3,7 +3,10 @@
 require_once('./model/Formatter.php');
 require_once('./model/Validator.php');
 require_once('./model/DataLayer.php');
+require_once('./model/Backup.php');
 require_once('./controllers/controller.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/../config.php'); // Variable $dbh (PDO) is defined within
+
 
 // Turn on error reporting
 ini_set('display_errors', 1);
@@ -12,14 +15,17 @@ error_reporting(E_ALL);
 session_start();
 
 // Initialize globals
+
 $controller = new Controller();
-$datalayer = new DataLayer();
+$datalayer = new DataLayer($dbh);
+$GLOBALS['backup'] = new Backup($dbh);
 
 // Get project file path relative to root (e.g. "/485/advise-it-capstone")
 $PROJECT_DIR = dirname($_SERVER['PHP_SELF']);
 
 // Subtract project directory path from request to get relative request path
 $request = substr($_SERVER['REQUEST_URI'], strlen($PROJECT_DIR));
+
 
 // Parse token if passed in URL
 if (substr($request, 0, 5) === "/plan") {
@@ -41,6 +47,12 @@ if (substr($request, 0, 5) === "/plan") {
 
     // Remove token for switch -> "/plan"
     $request = substr($request, 0, 5);
+}
+else if(substr($request, 0, 13) === "/student-plan"){
+    //Extract the token from "/student-plan/123ABC"
+    $token = substr($request, 14);
+    //Remove token for switch -> "/student-plan"
+    $request = substr($request, 0, 13);
 }
 
 switch ($request) {
@@ -65,6 +77,9 @@ switch ($request) {
         break;
     case '/standardized-plans':
         $controller->adminStandard();
+        break;
+    case '/student-plan':
+        $controller->studentPlan($token);
         break;
     case '/logout':
         $controller->logout();
