@@ -4,32 +4,12 @@
 $schoolYears;
 $advisor;
 
-
-
-
-
-
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
-    <!--	Works-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- Styles -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-            crossorigin="anonymous"
-    >
-    <link rel="stylesheet" href="<?php echo $GLOBALS['PROJECT_DIR'] ?>/styles/styles.css">
-
-    <!-- Jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <?php require "includes/head-includes.php"?>
 
     <title>Student Plan</title>
 </head>
@@ -64,7 +44,7 @@ $advisor;
             
                                         <div class="row">
                                             <!-- Fall Quarter -->
-                                            <div class="col-sm">
+                                            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                                                 <div>
                                                     <h4 class="d-inline">Fall Quarter</h4>
                                                     <h5>'.($year -1).'</h5>
@@ -83,7 +63,7 @@ $advisor;
                                                 </div>
                                             </div>
                                             <!-- Winter Quarter -->
-                                            <div class="col-sm">
+                                            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                                                 <div>
                                                     <h4 class="d-inline">Winter Quarter</h4>
                                                     <h5>'.$year.'</h5>
@@ -101,11 +81,9 @@ $advisor;
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-        
-                                        <div class="row mt-5">
+                                        
                                             <!-- Spring Quarter -->
-                                            <div class="col-sm">
+                                            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                                                 <div>
                                                     <h4 class="d-inline">Spring Quarter</h4>
                                                     <h5>'.$year.'</h5>
@@ -123,7 +101,8 @@ $advisor;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm">
+                                            <!-- Summer Quarter -->
+                                            <div class="col-12 col-sm-6 col-xxl-3 col-6-print">
                                                 <div>
                                                     <h4 class="d-inline">Summer Quarter</h4>
                                                     <h5>'.$year.'</h5>
@@ -150,7 +129,10 @@ $advisor;
         </div>
     </div>
 </div>
-    <!--Including the JS for the file-->
-<!--    <script src="../scripts/printPlan.js"></script>-->
+    <!-- Bootstrap JS -->
+    <?php require "includes/bootstrap-js.html"?>
+
+    <!-- Script to handle Print button -->
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/print.js"></script>
 </body>
 </html>

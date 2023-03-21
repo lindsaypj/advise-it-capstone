@@ -1,3 +1,7 @@
-document.getElementById("printBtn").onclick = () => {
-    window.print();
-};
+
+window.addEventListener('load', () => {
+    document.getElementById("printBtn").onclick = () => {
+        window.print();
+    };
+})
+

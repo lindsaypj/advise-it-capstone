@@ -9,16 +9,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-
-	<!-- Styles -->
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	  	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-		crossorigin="anonymous"
-	>
-	<link rel="stylesheet" href="<?php echo $GLOBALS['PROJECT_DIR']; ?>/styles/styles.css">
+    <?php require "includes/head-includes.php"?>
 
 	<title>Home</title>
 </head>
@@ -29,12 +20,20 @@
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col text-center">
-				<h1 class="pt-5 pb-3">Home Page</h1>
+				<h1 class="pt-5 pb-3">New Education Plan</h1>
 				<hr>
+                <!-- Standard Plan Selector -->
+                <button
+                        type="button"
+                        class="btn btn-lg m-3 mt-3 bg-grcgreen text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#standardPlanModal"
+                >Use Standard Plan</button>
+                <?php include "includes/standard_plan_selection.php"; ?>
 				<a
 					href="plan"
 					class="btn btn-lg m-3 mt-3 bg-grcgreen text-white"
-				>New Education Plan</a>
+				>Blank Plan</a>
 			</div>
 		</div>
 	</div>
@@ -71,18 +70,11 @@
 		</div>
 	</div>
 
-	<!-- JavaScript -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-		integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-		crossorigin="anonymous"
-	></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-		crossorigin="anonymous"
-	></script>
+    <!-- Bootstrap JS -->
+    <?php require "includes/bootstrap-js.html"?>
 
+    <!-- Script to handle Standard Plan Selection -->
+    <script src="<?php echo $GLOBALS['PROJECT_DIR']; ?>/scripts/standardPlanSelection.js"></script>
 
 	<?php // Open Login modal if attempt was made
     if (isset($displayLoginForm) && $displayLoginForm === true) {

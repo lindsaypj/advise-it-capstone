@@ -49,4 +49,40 @@ class Formatter
         }
         return $links;
     }
+
+    static function shiftStartYear($plan, $startYear, $startQuarter) {
+        // Sort years in ascending order (2000, 2001, 2002...)
+        ksort($plan['schoolYears']);
+
+        // Output variable
+        $formattedYears = [];
+
+        // Determine initial offset (Fall Quarter is 2020, while the rest are 2021)
+        // This step is required to convert Calendar Year to School Year
+        $incrementOffset = 0;
+        if ($startQuarter === "AUTUMN") {
+            $incrementOffset = 1;
+        }
+        // Store the plan data under the correct school years
+        foreach ($plan['schoolYears'] as $schoolYear) {
+            // Update calendar year for each quarter in each school year
+            foreach($schoolYear as $key=>$quarter) {
+                // ignore "render" property
+                if (gettype($quarter) === "array") {
+                    if ($key === "fall") {
+                        $quarter['calendarYear'] = $startYear + $incrementOffset - 1;
+                    } else {
+                        $quarter['calendarYear'] = $startYear + $incrementOffset;
+                    }
+                }
+            }
+            // Render standard school year always
+            $schoolYear['render'] = true;
+
+            // Store school year in output array
+            $formattedYears[$startYear+$incrementOffset] = $schoolYear;
+            $incrementOffset++;
+        }
+        return $formattedYears;
+    }
 }

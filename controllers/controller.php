@@ -14,27 +14,25 @@ class Controller {
             $displayLoginForm = true;
         }
 
-        // Generate token for new plan link/s
-        $newToken = $GLOBALS['datalayer']->generateToken();
         $username = "";
         $errorMessage = "";
 
         // Render the view
         require 'views/home.php';
     }
+
     function studentPlan($token){
         //if token is not set or not a token or token is not a string
         if ((!(isset($token))) || !$token || gettype($token) !== "string"){
             http_response_code(404);
-            require ("views/404.php");
+            require "views/404.php";
             return; // Escape Controller
         }
-
 
         // If token is invalid, redirect to home
         if (!(Validator::validToken($token))) {
             http_response_code(404);
-            require ($GLOBALS['PROJECT_DIR'] . "/views/404.php");
+            require "views/404.php";
             return; // Escape Controller
         }
 
@@ -48,7 +46,7 @@ class Controller {
         // Check if Token is stored in database
         if (empty($plan['token'])) {
             http_response_code(404);
-            require ($GLOBALS['PROJECT_DIR'] . "/views/404.php");
+            require "views/404.php";
             return; // Escape Controller
         }
 
@@ -60,14 +58,15 @@ class Controller {
         //Render the page
         require 'views/student_plan.php';
     }
+
     function educationPlan($token) {
         // Generate Token if not passed
         if ((!(isset($token))) || !$token || gettype($token) !== "string") {
             $token = $GLOBALS['datalayer']->generateToken();
             // Add token to URL
             header('location: '.$GLOBALS['PROJECT_DIR'].'/plan/'.$token);
+            return; // Escape Controller
         }
-
 
         // If token is invalid, redirect to home
         if (!(Validator::validToken($token))) {
@@ -113,24 +112,39 @@ class Controller {
             }
         }
 
-        // Get token data from database
-        $plan = $GLOBALS['datalayer']->getPlan($token);
 
-        // Check if Token is stored in database (new plans are not in database)
-        if (!empty($plan['token'])) {
-            $token = $plan['token'];
-            $lastUpdated = Formatter::formatTime($plan['lastUpdated']);
-            $advisor = $plan['advisor'];
-            $schoolYears = $plan['schoolYears'];
+        // If standard plan was requested, load that instead
+        if (isset($_SESSION['query']) && isset($_SESSION['query']['standardQuarter']) && isset($_SESSION['query']['standardYear'])) {
+            // Get standardized plan
+            $plan = $GLOBALS['datalayer']->getPlan($_SESSION['query']['standardQuarter']);
+
+            // Reformat to selected starting year
+            if (isset($plan['schoolYears'])) {
+                $schoolYears = Formatter::shiftStartYear($plan, $_SESSION['query']['standardYear'], $_SESSION['query']['standardQuarter']);
+            }
+
+            // CLEAR SESSION QUERY TO PREVENT UNWANTED DATA OVERWRITE
+            unset($_SESSION['query']);
         }
-        else { // No plan data (display current blank year)
-            $schoolYears = DataLayer::createBlankPlan()['schoolYears'];
+        else { // Get token data from database
+            // Load plan data (or blank plan)
+            $plan = $GLOBALS['datalayer']->getPlan($token);
+
+            // Check if Token is stored in database (new plans are not in database)
+            if (!empty($plan['token'])) {
+                $token = $plan['token'];
+                $lastUpdated = Formatter::formatTime($plan['lastUpdated']);
+                $advisor = $plan['advisor'];
+                $schoolYears = $plan['schoolYears'];
+            }
+            else { // No plan data (display current blank year)
+                $schoolYears = DataLayer::createBlankPlan($token)['schoolYears'];
+            }
         }
 
         // Render the view
         require 'views/education_plan.php';
     }
-
 
     function login() {
         // Ensure form has been submitted
@@ -186,8 +200,9 @@ class Controller {
         // Check that the user is logged in
         $this->checkLoggedIn();
 
-        // Generate New Token for "Education Plan" Link
-        $newToken = $GLOBALS['datalayer']->generateToken();
+        if (isset($_POST['backupBtn'])) {
+            $GLOBALS['backup']->backUpPlans();
+        }
 
         // Get plan data
         $plans = $GLOBALS['datalayer']->getPlans();
@@ -201,9 +216,9 @@ class Controller {
         $this->checkLoggedIn();
 
         //get plan data
-        $winterPlan = $GLOBALS['datalayer']->getPlan('winter');
-        $fallPlan = $GLOBALS['datalayer']->getPlan('autumn');
-        $springPlan = $GLOBALS['datalayer']->getPlan('spring');
+        $winterPlan = $GLOBALS['datalayer']->getPlan('WINTER');
+        $fallPlan = $GLOBALS['datalayer']->getPlan('AUTUMN');
+        $springPlan = $GLOBALS['datalayer']->getPlan('SPRING');
 
         //parse the data how to load on page
         $lastUpdatedWinter = Formatter::formatTime($winterPlan['lastUpdated']);
@@ -211,9 +226,9 @@ class Controller {
         $lastUpdatedSpring = Formatter::formatTime($springPlan['lastUpdated']);
 
         //school year data
-        $winterYear = $winterPlan['schoolYears'];
-        $fallYear = $fallPlan['schoolYears'];
-        $springYear = $springPlan['schoolYears'];
+        $winterYear = Formatter::shiftStartYear($winterPlan, 2023, "WINTER");
+        $fallYear = Formatter::shiftStartYear($fallPlan, 2022, "AUTUMN");
+        $springYear = Formatter::shiftStartYear($springPlan, 2023, "SPRING");
 
         //Initialize variable
         $formSubmitted = false;//set to false
@@ -226,9 +241,11 @@ class Controller {
             // Validate token
             if(!Validator::validToken($_POST['token'])){
                 header('location: logout');
+                exit;
             }
-            if($_POST['token'] !== "winter" && $_POST['token'] !== "spring" && $_POST['token'] !== "autumn"){
+            if($_POST['token'] !== "WINTER" && $_POST['token'] !== "SPRING" && $_POST['token'] !== "AUTUMN"){
                 header('location: logout');
+                exit;
             }
 
             // Attempt to update standardized plan
@@ -239,36 +256,36 @@ class Controller {
 
                 // Update Render data
                 switch($_POST['token']) {
-                    case "winter":
+                    case "WINTER":
                         // Check if Token is stored in database (new plans are not in database)
                         if (!empty($updatedPlan['token'])) {
                             $lastUpdatedWinter = Formatter::formatTime($updatedPlan['lastUpdated']);
-                            $winterYear = $updatedPlan['schoolYears'];
+                            $winterYear = Formatter::shiftStartYear($updatedPlan, 2023, "WINTER");
                         }
                         else { // No plan data (display current blank year)
-                            $winterYear = DataLayer::createBlankPlan()['schoolYears'];
+                            $winterYear = DataLayer::createBlankPlan("WINTER")['schoolYears'];
                         }
                         $saveMessage = "Winter Plan Updated";
                         break;
-                    case "spring":
+                    case "SPRING":
                         // Check if Token is stored in database (new plans are not in database)
                         if (!empty($updatedPlan['token'])) {
                             $lastUpdatedSpring = Formatter::formatTime($updatedPlan['lastUpdated']);
-                            $springYear = $updatedPlan['schoolYears'];
+                            $springYear = Formatter::shiftStartYear($updatedPlan, 2023, "SPRING");
                         }
                         else { // No plan data (display current blank year)
-                            $springYear = DataLayer::createBlankPlan()['schoolYears'];
+                            $springYear = DataLayer::createBlankPlan("SPRING")['schoolYears'];
                         }
                         $saveMessage = "Spring Plan Updated";
                         break;
-                    case "autumn":
+                    case "AUTUMN":
                         // Check if Token is stored in database (new plans are not in database)
                         if (!empty($updatedPlan['token'])) {
                             $lastUpdatedFall = Formatter::formatTime($updatedPlan['lastUpdated']);
-                            $fallYear = $updatedPlan['schoolYears'];
+                            $fallYear = Formatter::shiftStartYear($updatedPlan, 2022, "AUTUMN");
                         }
                         else { // No plan data (display current blank year)
-                            $fallYear = DataLayer::createBlankPlan()['schoolYears'];
+                            $fallYear = DataLayer::createBlankPlan("AUTUMN")['schoolYears'];
                         }
                         $saveMessage = "Fall Plan Updated";
                         break;
@@ -288,8 +305,6 @@ class Controller {
 
         // Get links to render on the page
         $links = $GLOBALS['datalayer']->getLinks();
-        // Generate New Token for "Education Plan" Link
-        $newToken = $GLOBALS['datalayer']->generateToken();
 
         $saveSuccess = null;
         $saveMessage = "";
@@ -393,8 +408,6 @@ class Controller {
         // Open login form on load
         $displayLoginForm = true;
 
-        // Load home page
-        $newToken = $GLOBALS['datalayer']->generateToken();
         require 'views/home.php';
     }
 

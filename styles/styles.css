@@ -59,19 +59,33 @@ button{
 
 /* CSS for printing */
 @media print {
-
-    button, hr{
+    button, hr {
         display: none !important;
     }
 
-    .table {
-        box-shadow: none !important;
-        border-color: black !important;
+    /* Show plan 2 quarters wide */
+    .col-6-print {
+        width: 50%;
     }
 
-    .table th {
-        background-color: grey !important;
-        color: black !important;
+    /* Hide nav */
+    nav.navbar {
+        display: none;
     }
 
+    /* One School Year per page */
+    #schoolYears > div.container {
+        margin-bottom: 6rem;
+    }
+}
+
+/* ==== Footer link styles ==== */
+
+.accordion-button:focus {
+    border-color: white;
+}
+
+.accordion-button:not(.collapsed) {
+    color: black !important;
+    background-color: white;
 }
