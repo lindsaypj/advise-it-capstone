@@ -57,6 +57,11 @@ button{
     background: none;
 }
 
+/* Hide first year separator */
+#schoolYears > div:nth-child(1) hr {
+    display: none;
+}
+
 /* CSS for printing */
 @media print {
     button, hr {
