@@ -22,6 +22,9 @@ $GLOBALS['backup'] = new Backup($dbh);
 
 // Get project file path relative to root (e.g. "/485/advise-it-capstone")
 $PROJECT_DIR = dirname($_SERVER['PHP_SELF']);
+if ($PROJECT_DIR === "/") {
+    $PROJECT_DIR = "";
+}
 
 // Subtract project directory path from request to get relative request path
 $request = substr($_SERVER['REQUEST_URI'], strlen($PROJECT_DIR));

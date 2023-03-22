@@ -70,7 +70,7 @@ class Controller {
 
         // If token is invalid, redirect to home
         if (!(Validator::validToken($token))) {
-            header('location: '.$GLOBALS['PROJECT_DIR']);
+            header('location: '.$GLOBALS['PROJECT_DIR']."/");
             return; // Escape Controller
         }
 
@@ -150,7 +150,7 @@ class Controller {
         // Ensure form has been submitted
         if (empty($_POST)) {
             // Load home page (without login form)
-            header("location: ".$GLOBALS['PROJECT_DIR']);
+            header("location: ".$GLOBALS['PROJECT_DIR']."/");
         }
 
         // Get the login form data (if present)
@@ -416,14 +416,15 @@ class Controller {
         if (!isset($_SESSION['logged-in']) || $_SESSION['logged-in'] != true || !isset($_SESSION['username'])) {
             // Failed to log in (Render Login on Home page)
             $_SESSION['displayLogin'] = true;
-            header('location: '.$GLOBALS['PROJECT_DIR']);
+            header('location: '.$GLOBALS['PROJECT_DIR']."/");
+            exit;
         }
     }
 
     function logout() {
         session_destroy();
         // Redirect to home page
-        header("Location: ".$GLOBALS['PROJECT_DIR']);
+        header("Location: ".$GLOBALS['PROJECT_DIR']."/");
     }
 
     private function validateAndAddLink() {

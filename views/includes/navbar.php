@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg nav-grc sticky-top grfont shadow-sm">
     <div>
-        <a class="text-dark d-block bg-grcgreen p-3" href="<?php echo $GLOBALS['PROJECT_DIR']; ?>">
+        <a class="text-dark d-block bg-grcgreen p-3" href="<?php echo $GLOBALS['PROJECT_DIR']; ?>/">
             <img src="https://www.greenriver.edu/media/site-assets/img/logo.png"
                  class="gr-logo">
         </a>
