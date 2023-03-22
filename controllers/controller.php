@@ -412,9 +412,13 @@ class Controller {
     // Helper function to load education plan after failed save/update
     private function failedPlanSave($token, $errorMessage) {
         // Set Error message
+        $formSubmitted = true;
         $saveSuccess = false;
         $saveMessage = $errorMessage;
+
         // Load blank plan
+        $advisor = "";
+        $lastUpdated = "";
         $schoolYears = DataLayer::createBlankPlan($token)['schoolYears'];
         require 'views/education_plan.php';
         exit;
