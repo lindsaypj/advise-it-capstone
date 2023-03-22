@@ -86,9 +86,16 @@ class Controller {
             $formSubmitted = true;
 
             // Store current token (if valid)
-            if (Validator::validToken($_POST['token'])) {
-                $token = $_POST['token'];
+            if (!Validator::validToken($_POST['token'])) {
+                $this->failedPlanSave($_POST['token'], "Invalid Token");
             }
+
+            // Validate year range
+            if (!Validator::validYears($_POST['schoolYears'])) {
+                $this->failedPlanSave($token, "Plan years out of range");
+            }
+
+            // Store advisor data to be loaded onto page
             if (isset($_POST['advisor'])) {
                 $advisor = $_POST['advisor'];
             }
@@ -401,6 +408,17 @@ class Controller {
     }
 
     // ---------- Helper functions ----------
+
+    // Helper function to load education plan after failed save/update
+    private function failedPlanSave($token, $errorMessage) {
+        // Set Error message
+        $saveSuccess = false;
+        $saveMessage = $errorMessage;
+        // Load blank plan
+        $schoolYears = DataLayer::createBlankPlan($token)['schoolYears'];
+        require 'views/education_plan.php';
+        exit;
+    }
 
     // Helper method to reload login form on a failed login attempt
     private function failedLogin($errorMessage, $username) {

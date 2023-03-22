@@ -1,6 +1,7 @@
 <?php
 
 class Validator {
+    private static int $_MAX_SCHOOL_YEAR = 2040;
     static function validToken(string $token) {
         // validate length
         if (strlen($token) != 6) {
@@ -26,6 +27,17 @@ class Validator {
         }
         if (strlen($link) < 12) {
             return false;
+        }
+        return true;
+    }
+
+    static function validYears($schoolYears) {
+        $minYear = DataLayer::getCurrentSchoolYear() - 2;
+
+        foreach($schoolYears as $year=>$schoolYear) {
+            if ($year > self::$_MAX_SCHOOL_YEAR || $year < $minYear) {
+                return false;
+            }
         }
         return true;
     }
